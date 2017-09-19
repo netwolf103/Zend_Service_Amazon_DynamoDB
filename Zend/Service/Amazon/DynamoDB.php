@@ -15,7 +15,7 @@
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Amazon_DynamoDB
- * @version    $Id: Exception.php 2017-09-19 01:40:32 Zhao<303685256@qq.com> $
+ * @version    $Id: DynamoDB.php 2017-09-19 05:35:18 Zhao<303685256@qq.com> $
  */
 
 /**
@@ -46,8 +46,10 @@ class Zend_Service_Amazon_DynamoDB extends Zend_Service_Amazon_Abstract
     /**
      * Create DynamoDB client.
      *
-     * @param  string $access_key       Override the default Access Key
-     * @param  string $secret_key       Override the default Secret Key
+     * @param  string $access_key
+     * @param  string $secret_key
+     * @param  string $region
+     * @param  string $version
      * @return void
      */
     public function __construct($accessKey=null, $secretKey=null, $region=null, $version=null)
