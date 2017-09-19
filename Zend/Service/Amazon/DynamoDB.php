@@ -42,7 +42,7 @@ class Zend_Service_Amazon_DynamoDB extends Zend_Service_Amazon_Abstract
      * @var string API version
      */
     protected $_version = '20120810';
-	
+    
     /**
      * Create DynamoDB client.
      *
@@ -52,163 +52,163 @@ class Zend_Service_Amazon_DynamoDB extends Zend_Service_Amazon_Abstract
      */
     public function __construct($accessKey=null, $secretKey=null, $region=null, $version=null)
     {
-		parent::__construct($accessKey, $secretKey);
+        parent::__construct($accessKey, $secretKey);
 
         if(! ($this->_endpoint = Zend_Service_Amazon_DynamoDB_Region::getEndpoint($region)) ) {
             #require_once 'Zend/Service/Amazon/DynamoDB/Exception.php';
             throw new Zend_Service_Amazon_DynamoDB_Exception("DynamoDB region were not supplied");
         }
 
-		if($version) {
-			$this->_version = $version;
-		}
-	}
+        if($version) {
+            $this->_version = $version;
+        }
+    }
 
-	/**
-	 * Returns information about the table
-	 *
-	 * @param  string $tableName
-	 * @return string|false
-	 * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_DescribeTable.html
-	 */
-	public function describeTable($tableName)
-	{
-		$response = $this->_makeRequest('DescribeTable', array('TableName' => $tableName));
+    /**
+     * Returns information about the table
+     *
+     * @param  string $tableName
+     * @return string|false
+     * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_DescribeTable.html
+     */
+    public function describeTable($tableName)
+    {
+        $response = $this->_makeRequest('DescribeTable', array('TableName' => $tableName));
 
         if ($response->getStatus() != 200) {
             return false;
         }
 
         return $response->getBody();
-	}
+    }
 
-	/**
-	 * Adds a new table to DynamoDB
-	 *
-	 * @param  string $tableName
-	 * @param  array  $request
-	 * @return string|false
-	 * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_CreateTable.html#DDB-CreateTable-request-AttributeDefinitions
-	 */
-	public function createTable($tableName, $request)
-	{
-		$request = array_merge($request, array('TableName' => $tableName));
-		$response = $this->_makeRequest('CreateTable', $request);
-
-        if ($response->getStatus() != 200) {
-            return false;
-        }
-
-        return $response->getBody();		
-	}
-
-	/**
-	 * Deletes a table and all of its items
-	 *
-	 * @param  string $tableName
-	 * @return boolean
-	 * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_DeleteTable.html
-	 */
-	public function deleteTable($tableName)
-	{
-		$response = $this->_makeRequest('DeleteTable', array('TableName' => $tableName));
+    /**
+     * Adds a new table to DynamoDB
+     *
+     * @param  string $tableName
+     * @param  array  $request
+     * @return string|false
+     * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_CreateTable.html#DDB-CreateTable-request-AttributeDefinitions
+     */
+    public function createTable($tableName, $request)
+    {
+        $request = array_merge($request, array('TableName' => $tableName));
+        $response = $this->_makeRequest('CreateTable', $request);
 
         if ($response->getStatus() != 200) {
             return false;
         }
 
-        return true;		
-	}
+        return $response->getBody();        
+    }
 
-	/**
-	 * Returns an array of table names associated with the current account and endpoint
-	 *
-	 * @param  string $tableName
-	 * @param  array  $request
-	 * @return string|false
-	 * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_ListTables.html
-	 */
-	public function listTables($request = array())
-	{
-		$response = $this->_makeRequest('ListTables', $request);
-
-        if ($response->getStatus() != 200) {
-            return false;
-        }
-
-        return $response->getBody();		
-	}
-
-	/**
-	 * Creates a new item, or replaces an old item with a new item
-	 *
-	 * @param  string $table
-	 * @param  array  $request
-	 * @return boolean
-	 * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_PutItem.html
-	 */
-	public function putItem($table, $request)
-	{
-		$request = array_merge($request, array('TableName' => $table));
-
-		$response = $this->_makeRequest('PutItem', $request);
+    /**
+     * Deletes a table and all of its items
+     *
+     * @param  string $tableName
+     * @return boolean
+     * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_DeleteTable.html
+     */
+    public function deleteTable($tableName)
+    {
+        $response = $this->_makeRequest('DeleteTable', array('TableName' => $tableName));
 
         if ($response->getStatus() != 200) {
             return false;
         }
 
-        return true;		
-	}
+        return true;        
+    }
 
-	/**
-	 * Returns a set of attributes for the item with the given primary key.
-	 *
-	 * @param  string $table
-	 * @param  array  $request
-	 * @return string|false
-	 * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_GetItem.html
-	 */
-	public function getItem($table, $request)
-	{
-		$request = array_merge($request, array('TableName' => $table));
-
-		$response = $this->_makeRequest('GetItem', $request);
+    /**
+     * Returns an array of table names associated with the current account and endpoint
+     *
+     * @param  string $tableName
+     * @param  array  $request
+     * @return string|false
+     * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_ListTables.html
+     */
+    public function listTables($request = array())
+    {
+        $response = $this->_makeRequest('ListTables', $request);
 
         if ($response->getStatus() != 200) {
             return false;
         }
 
-        return $response->getBody();		
-	}
+        return $response->getBody();        
+    }
 
-	/**
-	 * Deletes a single item in a table by primary key
-	 *
-	 * @param  string $table
-	 * @param  array  $request
-	 * @return boolean
-	 * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_DeleteItem.html
-	 */
-	public function deleteItem($table, $request)
-	{
-		$request = array_merge($request, array('TableName' => $table));
+    /**
+     * Creates a new item, or replaces an old item with a new item
+     *
+     * @param  string $table
+     * @param  array  $request
+     * @return boolean
+     * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_PutItem.html
+     */
+    public function putItem($table, $request)
+    {
+        $request = array_merge($request, array('TableName' => $table));
 
-		$response = $this->_makeRequest('DeleteItem', $request);
+        $response = $this->_makeRequest('PutItem', $request);
 
         if ($response->getStatus() != 200) {
             return false;
         }
 
-        return true;		
-	}
-	
-	/**
-	 * Make a request to Amazon DynamoDB
-	 *
-	 * @param  string $action
-	 * @param  array  $params
-	 * @return Zend_Http_Response
-	 */
+        return true;        
+    }
+
+    /**
+     * Returns a set of attributes for the item with the given primary key.
+     *
+     * @param  string $table
+     * @param  array  $request
+     * @return string|false
+     * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_GetItem.html
+     */
+    public function getItem($table, $request)
+    {
+        $request = array_merge($request, array('TableName' => $table));
+
+        $response = $this->_makeRequest('GetItem', $request);
+
+        if ($response->getStatus() != 200) {
+            return false;
+        }
+
+        return $response->getBody();        
+    }
+
+    /**
+     * Deletes a single item in a table by primary key
+     *
+     * @param  string $table
+     * @param  array  $request
+     * @return boolean
+     * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_DeleteItem.html
+     */
+    public function deleteItem($table, $request)
+    {
+        $request = array_merge($request, array('TableName' => $table));
+
+        $response = $this->_makeRequest('DeleteItem', $request);
+
+        if ($response->getStatus() != 200) {
+            return false;
+        }
+
+        return true;        
+    }
+    
+    /**
+     * Make a request to Amazon DynamoDB
+     *
+     * @param  string $action
+     * @param  array  $params
+     * @return Zend_Http_Response
+     */
     public function _makeRequest($action, $params = array())
     {
         $headers = array();
@@ -232,7 +232,7 @@ class Zend_Service_Amazon_DynamoDB extends Zend_Service_Amazon_Abstract
         $client->setAuth(false);
         $client->setRawData($body);
 
-		$client->setHeaders($headers);
+        $client->setHeaders($headers);
 
          do {
             $retry = false;
@@ -255,7 +255,7 @@ class Zend_Service_Amazon_DynamoDB extends Zend_Service_Amazon_Abstract
             }
         } while ($retry);
 
-		return $response;
+        return $response;
     }
 
     /**
@@ -288,6 +288,6 @@ class Zend_Service_Amazon_DynamoDB extends Zend_Service_Amazon_Abstract
         $canonical_auth_string = "AWS3 {$canonical_auth_string}";
         $headers['x-amzn-authorization'] = $canonical_auth_string;
 
-		return $canonical_auth_string;
-	}
+        return $canonical_auth_string;
+    }
 }
