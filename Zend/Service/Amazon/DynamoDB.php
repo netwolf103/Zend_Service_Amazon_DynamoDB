@@ -184,6 +184,48 @@ class Zend_Service_Amazon_DynamoDB extends Zend_Service_Amazon_Abstract
     }
 
     /**
+     * Returns one or more items and item attributes by accessing every item in a table or a secondary index
+     *
+     * @param  string $table
+     * @param  array  $request
+     * @return string|false
+     * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_Scan.html
+     */
+    public function scan($table, $request = array())
+    {
+        $request = array_merge($request, array('TableName' => $table));
+
+        $response = $this->_makeRequest('Scan', $request);
+
+        if ($response->getStatus() != 200) {
+            return false;
+        }
+
+        return $response->getBody();        
+    }
+
+    /**
+     * Finds items based on primary key values
+     *
+     * @param  string $table
+     * @param  array  $request
+     * @return string|false
+     * @see    http://docs.aws.amazon.com/zh_cn/amazondynamodb/latest/APIReference/API_Query.html
+     */
+    public function query($table, $request)
+    {
+        $request = array_merge($request, array('TableName' => $table));
+
+        $response = $this->_makeRequest('Query', $request);
+
+        if ($response->getStatus() != 200) {
+            return false;
+        }
+
+        return $response->getBody();        
+    }
+
+    /**
      * Deletes a single item in a table by primary key
      *
      * @param  string $table
