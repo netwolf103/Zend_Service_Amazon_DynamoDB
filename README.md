@@ -1,7 +1,8 @@
 # Zend_Service_Amazon_DynamoDB
 Amazon DynamoDB for Zend v1.12.3
 <h2>How to use</h2>
-<pre>
+
+```php
 $db = new Zend_Service_Amazon_DynamoDB(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, 'us-east-1');
 $r = $db->describeTable('catalog_product_entity');
 $r = $db->deleteTable('test');
@@ -35,4 +36,4 @@ $r = $db->getItem('catalog_product_entity', array(
                 ),
         ),
 ));
-</pre>
+```
